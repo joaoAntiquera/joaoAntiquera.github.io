@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8"/>
+	<title>Carregador Smart Campus</title>
+	<meta http-equiv="refresh" content="5">
+	<link rel="icon" type="image/x-icon" href="favicon.ico">
+	<style>
+
+		body
+		{
+			background-color:#DCDCDC;
+			
+		}
+
+		table {
+		  font-family: arial, sans-serif;
+		  border-collapse: collapse;
+		  width: 100%;
+		  border:3px solid #000000;
+		}
+		
+		td, th {
+		  border: 2px solid #000000;
+		  text-align: left;
+		  padding: 8px;
+		}
+		
+		tr:nth-child(even) {
+		  background-color: #dddddd;
+		}
+
+		.center {
+  			position: absolute;
+ 			 right: 335px;
+ 			 width: 300px;
+ 			 border: 3px solid #000000;
+
+		}
+
+		.iot
+		{
+			border: 3px solid #778899
+		}
+		
+		.container {
+ 			 position: relative;
+  			text-align: center;
+  			color: white;
+			}
+
+		.bottom-left {
+ 			 position: absolute;
+  			bottom: 8px;
+  			left: 16px;
+			}
+
+		.top-left {
+  		    position: absolute;
+  			top: 8px;
+ 			 left: 16px;
+			}
+
+		.top-right {
+		  position: absolute;
+		  top: 8px;
+		  right: 16px;
+		}
+
+		.bottom-right {
+		  position: absolute;
+		  bottom: 8px;
+		  right: 16px;
+		}
+
+		.centered {
+		  position: absolute;
+		  top: 50%;
+		  left: 50%;
+		  transform: translate(-50%, -50%);
+		}
+
+		</style>
+</head>
+
+<body>
+	
+	<img class = "iot" align="right" src="Imagem\iot.png" alt="Falha ao carregar" width=125 height=125>
+	<br><br>
+	<img class = "fotos" align="left" src="https://www.inatel.br/smartcampus/imgs/logo.png" alt="Falha ao carregar" width=426 height=36>	
+	<iframe name="hiddenFrame" width="0" height="0" border="0" style="display: none;"></iframe>
+
+<table> 
+	<thead>
+		<th > Potência (W) </th>
+		<th > Consumo (R$) </th>
+		<th > Corrente (A) </th>
+	</thead>,
+
+	<td id="linha_potencia"> </td>
+	<td id="linha_consumo"> </td>
+	<td id="linha_corrente">  </td>
+</table>
+
+
+<br>
+<br>
+
+
+
+<script>
+function getMedidas() {
+	var obj, dbParam, xmlhttp, myObj, x = "";
+	var potencia = ""
+	var corrente = ""
+	var consumo = ""
+	obj = { carregador: "medidas" };
+	dbParam = JSON.stringify(obj);
+	xmlhttp = new XMLHttpRequest();
+	xmlhttp.onreadystatechange = function() {
+	if (this.readyState == 4 && this.status == 200) {
+		myObj = JSON.parse(this.responseText);
+
+		potencia += myObj[1].Potencia+"<br>"
+		corrente += myObj[1].Corrente+"<br>"
+		consumo += (myObj[0].Consumo * 0.00064333).toFixed(2) +"<br>"
+   
+		document.getElementById("linha_consumo").innerHTML = consumo;
+		document.getElementById("linha_potencia").innerHTML = potencia;
+		document.getElementById("linha_corrente").innerHTML = corrente;
+	}
+	};
+	xmlhttp.open("GET", "https://smartcampus.inatel.br:4433/api/userapps/5d4c81ae53b2d6003023fa34/devices/5d4c81bf53b2d6003023fa37/meas?x-master-token=XGEX4od0yHMpIWkCUoW0ZTWN", true);
+	xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xmlhttp.send("x=" + dbParam);
+}
+getMedidas();
+</script>
+<br><br><br>
+<img src="https://smartcampus.inatel.br:4433/assets/images/iotecosystem_icon_final_0.png" width=1000 height=650>
+<br><br>
+<br><br><br><br><br><br>
+<img class = "center" src="Imagem/Inatel.jpg" alt="Inatel" >
+<br><br><br><br><br><br>
+
+<footer>
+	<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<div class="container">
+  <img src="Imagem/azul.jpg" width=1000 height=150>
+  <div class="top-left"><a href="https://inatel.br/home/contato">@Contato</a></p>
+  	<p>Instituto Nacional de Telecomunicações – Inatel<br>
+		Campus em Santa Rita do Sapucaí - MG - Brasil<br>
+		Av. João de Camargo, 510 - Centro - 37540-000<br>
+		+55 (35) 3471 9200</p><br></div>
+  <div class="top-right"><br>Escritório em São Paulo - SP - Brasil<br>
+						WTC Tower, 18º andar - Conjunto 1811/1812<br>
+						Av. das Nações Unidas, 12.551 - Brooklin Novo - 04578-903<br>
+						+55 (11) 3043 6015 | inatel.sp@inatel.br<br>
+</div>	
+</div>
+</footer>
+
+
+</body>
+
+</html>
